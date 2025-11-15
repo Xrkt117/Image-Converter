@@ -14,9 +14,26 @@ const qualityControl = document.getElementById('qualityControl');
 const convertBtn = document.getElementById('convertBtn');
 const downloadBtn = document.getElementById('downloadBtn');
 const resetBtn = document.getElementById('resetBtn');
+const themeToggle = document.getElementById('themeToggle');
 
 let currentFile = null;
 let convertedBlob = null;
+
+// Theme Management
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+themeToggle.addEventListener('click', toggleTheme);
+initTheme();
 
 // Event Listeners
 browseBtn.addEventListener('click', () => fileInput.click());
