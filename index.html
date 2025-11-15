@@ -30,14 +30,14 @@
             <div class="converter-box">
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-content">
-                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                             <polyline points="17 8 12 3 7 8"></polyline>
                             <line x1="12" y1="3" x2="12" y2="15"></line>
                         </svg>
                         <h2>Drop image here</h2>
                         <p>or click to select</p>
-                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp,image/tiff" hidden>
                         <button class="browse-btn" id="browseBtn">Select File</button>
                         <p class="supported-formats">JPG · PNG · WebP · GIF · BMP</p>
                     </div>
@@ -46,21 +46,28 @@
                 <div class="preview-section" id="previewSection" style="display: none;">
                     <div class="preview-container">
                         <div class="preview-box">
-                            <h3>Original Image</h3>
+                            <h3>Original</h3>
                             <div class="image-preview">
                                 <img id="originalPreview" alt="Original">
                                 <div class="image-info">
                                     <span id="originalInfo"></span>
+                                    <span id="originalDimensions" class="dimensions"></span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="preview-box">
-                            <h3>Converted Image</h3>
+                            <h3>Converted</h3>
                             <div class="image-preview">
-                                <img id="convertedPreview" alt="Converted">
+                                <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+                                    <div class="loading-spinner"></div>
+                                    <p>Converting...</p>
+                                </div>
+                                <img id="convertedPreview" alt="Converted" style="display: none;">
+                                <div id="convertedPlaceholder" style="display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary); font-size: 0.85rem;">No converted image yet</div>
                                 <div class="image-info">
                                     <span id="convertedInfo"></span>
+                                    <span id="convertedDimensions" class="dimensions"></span>
                                 </div>
                             </div>
                         </div>
@@ -68,9 +75,9 @@
 
                     <div class="controls">
                         <div class="format-selector">
-                            <label for="formatSelect">Convert to:</label>
+                            <label for="formatSelect">Format</label>
                             <select id="formatSelect">
-                                <option value="image/jpeg">JPEG (JPG)</option>
+                                <option value="image/jpeg">JPEG</option>
                                 <option value="image/png">PNG</option>
                                 <option value="image/webp">WebP</option>
                                 <option value="image/gif">GIF</option>
@@ -84,10 +91,15 @@
                         </div>
 
                         <div class="button-group">
-                            <button class="btn btn-primary" id="convertBtn">Convert Image</button>
-                            <button class="btn btn-secondary" id="downloadBtn" style="display: none;">Download</button>
+                            <button class="btn btn-primary" id="convertBtn">
+                                <span class="btn-text">Convert</span>
+                            </button>
+                            <button class="btn btn-secondary" id="downloadBtn" style="display: none;">
+                                <span class="btn-text">Download</span>
+                            </button>
                             <button class="btn btn-outline" id="resetBtn">Reset</button>
                         </div>
+                        <div class="error-message" id="errorMessage" style="display: none;"></div>
                     </div>
                 </div>
             </div>
